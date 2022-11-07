@@ -8,31 +8,29 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\ezio.filho\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/yaaguz/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ezio.filho\\source\\repos\\AutoBattle\\AutoBattle\\AutoBattle.csproj",
+      "projectUniqueName": "/Users/yaaguz/Unity Projects/AutoBattle/AutoBattle/AutoBattle.csproj",
       "projectName": "AutoBattle",
-      "projectPath": "C:\\Users\\ezio.filho\\source\\repos\\AutoBattle\\AutoBattle\\AutoBattle.csproj",
-      "packagesPath": "C:\\Users\\ezio.filho\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ezio.filho\\source\\repos\\AutoBattle\\AutoBattle\\obj\\",
+      "projectPath": "/Users/yaaguz/Unity Projects/AutoBattle/AutoBattle/AutoBattle.csproj",
+      "packagesPath": "/Users/yaaguz/.nuget/packages/",
+      "outputPath": "/Users/yaaguz/Unity Projects/AutoBattle/AutoBattle/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\ezio.filho\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/yaaguz/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -56,7 +54,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -65,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100-rc.2.22477.23/RuntimeIdentifierGraph.json"
       }
     }
   }
