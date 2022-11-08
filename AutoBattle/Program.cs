@@ -1,7 +1,4 @@
 ﻿using System;
-using static AutoBattle.Character;
-using static AutoBattle.Grid;
-using System.Collections.Generic;
 using static AutoBattle.Types;
 
 namespace AutoBattle
@@ -113,21 +110,28 @@ namespace AutoBattle
 
             void HandleTurn()
             {
-                //if (PlayerCharacter.health == 0)
-                //{
-                //    return;
-                //}
-                //else if (EnemyCharacter.health == 0)
-                //{
-                //    Console.Write(Environment.NewLine + Environment.NewLine);
+                bool endGame = false;
+                string winner = "";
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    Character character = AllPlayers[i];
+                    if (character.health <= 0)
+                        endGame = true;
+                    else
+                        winner = character.name;
+                }
 
-                //    // endgame?
+                if (endGame)
+                {
+                    Console.Write(Environment.NewLine + Environment.NewLine);
 
-                //    Console.Write(Environment.NewLine + Environment.NewLine);
-
-                //    return;
-                //}
-                //else
+                    // endgame
+                    Console.WriteLine($"{winner} WON!\n");
+                    Console.WriteLine("THE END!\n");
+                    Console.ReadKey();
+                    return;
+                }
+                else
                 {
                     Console.Write(Environment.NewLine + Environment.NewLine);
                     Console.WriteLine("Click on any key to start the next turn...\n");

@@ -7,14 +7,15 @@ namespace AutoBattle
 {
     public class Character
     {
-        private string name;
+        public string name;
         public float health;
         private float baseDamage;
         private float damageMultiplier;
         public GridBox currentBox;
-        private int playerIndex;
+        public int playerIndex;
         public Character target;
         public CharacterClass characterClass;
+        private bool dead = false;
 
         public Character(string name, int playerIndex, float health, float baseDamage, CharacterClass characterClass)
         {
@@ -28,7 +29,8 @@ namespace AutoBattle
 
         public bool TakeDamage(float amount)
         {
-            if ((health -= baseDamage) <= 0)
+            health -= amount;
+            if (health <= 0)
             {
                 Die();
                 return true;
@@ -38,12 +40,7 @@ namespace AutoBattle
 
         public void Die()
         {
-            //TODO >> maybe kill him?
-        }
-
-        public void WalkTO(bool CanWalk)
-        {
-
+            dead = true;
         }
 
         private void Move(Grid battlefield, GridBox newBoxPosition)
@@ -57,6 +54,9 @@ namespace AutoBattle
 
         public bool StartTurn(Grid battlefield)
         {
+            if (dead)
+                return false;
+
             if (CheckCloseTargets(battlefield))
             {
                 Attack(target);
@@ -124,8 +124,9 @@ namespace AutoBattle
         public void Attack(Character target)
         {
             var rand = new Random();
-            target.TakeDamage(rand.Next(0, (int)baseDamage));
-            Console.WriteLine($"Player {playerIndex} is attacking the player {this.target.playerIndex} and did {baseDamage} damage\n");
+            int hitDamage = rand.Next(0, (int)baseDamage);
+            target.TakeDamage(hitDamage);
+            Console.WriteLine($"{name} is attacking {this.target.name} and did {hitDamage} damage\n");
         }
     }
 }
