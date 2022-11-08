@@ -45,7 +45,7 @@ namespace AutoBattle
                     }
                     else
                     {
-                        Console.Write($"[" + currentgrid.Index + "]\t");
+                        Console.Write($"[" + currentgrid.index + "]\t");
                     }
                 }
                 Console.Write(Environment.NewLine + Environment.NewLine);

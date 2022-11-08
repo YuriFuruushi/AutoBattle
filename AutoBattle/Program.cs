@@ -21,7 +21,7 @@ namespace AutoBattle
                 //Create Player Character
                 GetPlayerChoice();
                 //Create Enemy Character
-                CreateCharacter(1);
+                CreateCharacter("Enemy", 1);
                 StartGame();
             }
 
@@ -39,7 +39,7 @@ namespace AutoBattle
                     case "2":
                     case "3":
                     case "4":
-                        CreateCharacter(0, Int32.Parse(choice));
+                        CreateCharacter("Player", 0, Int32.Parse(choice));
                         break;
                     default:
                         GetPlayerChoice();
@@ -48,7 +48,7 @@ namespace AutoBattle
 
             }
 
-            void CreateCharacter(int id, int classIndex = -1)
+            void CreateCharacter(string name, int id, int classIndex = -1)
             {
                 int charClass = classIndex;
 
@@ -56,7 +56,7 @@ namespace AutoBattle
                     charClass = GetRandomInt(1, 4);
 
 
-                Character character = new Character("name", id, 100, 20, (CharacterClass)charClass);
+                Character character = new Character(name, id, 100, 20, (CharacterClass)charClass);
                 Console.WriteLine($"Player {id} Class Choice: {(CharacterClass)charClass}");
                 AllPlayers[id] = (character);
             }

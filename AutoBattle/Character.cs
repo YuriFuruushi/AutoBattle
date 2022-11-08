@@ -49,10 +49,10 @@ namespace AutoBattle
         private void Move(Grid battlefield, GridBox newBoxPosition)
         {
             currentBox.ocupied = false;
-            battlefield.grids[currentBox.Index] = currentBox;
+            battlefield.grids[currentBox.index] = currentBox;
             currentBox = newBoxPosition;
             currentBox.ocupied = true;
-            battlefield.grids[newBoxPosition.Index] = currentBox;
+            battlefield.grids[newBoxPosition.index] = currentBox;
         }
 
         public void StartTurn(Grid battlefield)
@@ -73,26 +73,26 @@ namespace AutoBattle
             {   // if there is no target close enough, calculates in wich direction this character should move to be closer to a possible target
                 if (this.currentBox.xIndex > target.currentBox.xIndex)
                 {
-                    Move(battlefield, battlefield.grids[currentBox.Index - 1]);
+                    Move(battlefield, battlefield.grids[currentBox.index - 1]);
                     Console.WriteLine($"Player {playerIndex} walked left\n");
                     return;
                 }
                 else if (currentBox.xIndex < target.currentBox.xIndex)
                 {
-                    Move(battlefield, battlefield.grids[currentBox.Index + 1]);
+                    Move(battlefield, battlefield.grids[currentBox.index + 1]);
                     Console.WriteLine($"Player {playerIndex} walked right\n");
                     return;
                 }
 
                 if (this.currentBox.yIndex > target.currentBox.yIndex)
                 {
-                    Move(battlefield, battlefield.grids[currentBox.Index - battlefield.xLenght]);
+                    Move(battlefield, battlefield.grids[currentBox.index - battlefield.yLenght]);
                     Console.WriteLine($"Player {playerIndex} walked up\n");
                     return;
                 }
                 else if (this.currentBox.yIndex < target.currentBox.yIndex)
                 {
-                    Move(battlefield, battlefield.grids[currentBox.Index + battlefield.xLenght]);
+                    Move(battlefield, battlefield.grids[currentBox.index + battlefield.yLenght]);
                     Console.WriteLine($"Player {playerIndex} walked down\n");
                     return;
                 }
