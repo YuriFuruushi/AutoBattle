@@ -1,29 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Linq;
 using static AutoBattle.Types;
 
 namespace AutoBattle
 {
     public class Character
     {
-        public string Name { get; set; }
-        public float Health;
-        public float BaseDamage;
-        public float DamageMultiplier { get; set; }
+        private string name;
+        public float health;
+        private float baseDamage;
+        private float damageMultiplier;
         public GridBox currentBox;
-        public int PlayerIndex;
-        public Character Target { get; set; } 
-        public Character(CharacterClass characterClass)
-        {
+        private int playerIndex;
+        public Character target;
+        public CharacterClass characterClass;
 
+        public Character(string name, int playerIndex, float health, float baseDamage, CharacterClass characterClass)
+        {
+            this.name = name;
+            this.playerIndex = playerIndex;
+            this.health = health;
+            this.baseDamage = baseDamage;
+            this.characterClass = characterClass;
         }
 
 
         public bool TakeDamage(float amount)
         {
-            if((Health -= BaseDamage) <= 0)
+            if ((health -= baseDamage) <= 0)
             {
                 Die();
                 return true;
@@ -41,90 +46,80 @@ namespace AutoBattle
 
         }
 
+        private void Move(Grid battlefield, GridBox newBoxPosition)
+        {
+            currentBox.ocupied = false;
+            battlefield.grids[currentBox.Index] = currentBox;
+            currentBox = newBoxPosition;
+            currentBox.ocupied = true;
+            battlefield.grids[newBoxPosition.Index] = currentBox;
+        }
+
         public void StartTurn(Grid battlefield)
         {
-
-            if (CheckCloseTargets(battlefield)) 
+            if (target == null)
             {
-                Attack(Target);
-                
+
+            }
+
+            if (CheckCloseTargets(battlefield))
+            {
+                Attack(target);
+
 
                 return;
             }
             else
             {   // if there is no target close enough, calculates in wich direction this character should move to be closer to a possible target
-                if(this.currentBox.xIndex > Target.currentBox.xIndex)
+                if (this.currentBox.xIndex > target.currentBox.xIndex)
                 {
-                    if ((battlefield.grids.Exists(x => x.Index == currentBox.Index - 1)))
-                    {
-                        currentBox.ocupied = false;
-                        battlefield.grids[currentBox.Index] = currentBox;
-                        currentBox = (battlefield.grids.Find(x => x.Index == currentBox.Index - 1));
-                        currentBox.ocupied = true;
-                        battlefield.grids[currentBox.Index] = currentBox;
-                        Console.WriteLine($"Player {PlayerIndex} walked left\n");
-                        battlefield.DrawBattlefield(5, 5);
-
-                        return;
-                    }
-                } else if(currentBox.xIndex < Target.currentBox.xIndex)
-                {
-                    currentBox.ocupied = false;
-                    battlefield.grids[currentBox.Index] = currentBox;
-                    currentBox = (battlefield.grids.Find(x => x.Index == currentBox.Index + 1));
-                    currentBox.ocupied = true;
-                    return;
-                    battlefield.grids[currentBox.Index] = currentBox;
-                    Console.WriteLine($"Player {PlayerIndex} walked right\n");
-                    battlefield.DrawBattlefield(5, 5);
-                }
-
-                if (this.currentBox.yIndex > Target.currentBox.yIndex)
-                {
-                    battlefield.DrawBattlefield(5, 5);
-                    this.currentBox.ocupied = false;
-                    battlefield.grids[currentBox.Index] = currentBox;
-                    this.currentBox = (battlefield.grids.Find(x => x.Index == currentBox.Index - battlefield.xLenght));
-                    this.currentBox.ocupied = true;
-                    battlefield.grids[currentBox.Index] = currentBox;
-                    Console.WriteLine($"Player {PlayerIndex} walked up\n");
+                    Move(battlefield, battlefield.grids[currentBox.Index - 1]);
+                    Console.WriteLine($"Player {playerIndex} walked left\n");
                     return;
                 }
-                else if(this.currentBox.yIndex < Target.currentBox.yIndex)
+                else if (currentBox.xIndex < target.currentBox.xIndex)
                 {
-                    this.currentBox.ocupied = true;
-                    battlefield.grids[currentBox.Index] = this.currentBox;
-                    this.currentBox = (battlefield.grids.Find(x => x.Index == currentBox.Index + battlefield.xLenght));
-                    this.currentBox.ocupied = false;
-                    battlefield.grids[currentBox.Index] = currentBox;
-                    Console.WriteLine($"Player {PlayerIndex} walked down\n");
-                    battlefield.DrawBattlefield(5, 5);
-
+                    Move(battlefield, battlefield.grids[currentBox.Index + 1]);
+                    Console.WriteLine($"Player {playerIndex} walked right\n");
                     return;
                 }
+
+                if (this.currentBox.yIndex > target.currentBox.yIndex)
+                {
+                    Move(battlefield, battlefield.grids[currentBox.Index - battlefield.xLenght]);
+                    Console.WriteLine($"Player {playerIndex} walked up\n");
+                    return;
+                }
+                else if (this.currentBox.yIndex < target.currentBox.yIndex)
+                {
+                    Move(battlefield, battlefield.grids[currentBox.Index + battlefield.xLenght]);
+                    Console.WriteLine($"Player {playerIndex} walked down\n");
+                    return;
+                }
+
             }
         }
 
         // Check in x and y directions if there is any character close enough to be a target.
         bool CheckCloseTargets(Grid battlefield)
         {
-            bool left = (battlefield.grids.Find(x => x.Index == currentBox.Index - 1).ocupied);
-            bool right = (battlefield.grids.Find(x => x.Index == currentBox.Index + 1).ocupied);
-            bool up = (battlefield.grids.Find(x => x.Index == currentBox.Index + battlefield.xLenght).ocupied);
-            bool down = (battlefield.grids.Find(x => x.Index == currentBox.Index - battlefield.xLenght).ocupied);
+            //bool left = battlefield.grids[currentBox.Index - 1].ocupied;
+            //bool right = battlefield.grids[currentBox.Index + 1].ocupied;
+            //bool up = battlefield.grids[currentBox.Index - battlefield.xLenght].ocupied;
+            //bool down = battlefield.grids[currentBox.Index + battlefield.xLenght].ocupied;
 
-            if (left & right & up & down) 
-            {
-                return true;
-            }
-            return false; 
+            //if (left & right & up & down)
+            //{
+            //    return true;
+            //}
+            return false;
         }
 
-        public void Attack (Character target)
+        public void Attack(Character target)
         {
             var rand = new Random();
-            target.TakeDamage(rand.Next(0, (int)BaseDamage));
-            Console.WriteLine($"Player {PlayerIndex} is attacking the player {Target.PlayerIndex} and did {BaseDamage} damage\n");
+            target.TakeDamage(rand.Next(0, (int)baseDamage));
+            Console.WriteLine($"Player {playerIndex} is attacking the player {this.target.playerIndex} and did {baseDamage} damage\n");
         }
     }
 }
