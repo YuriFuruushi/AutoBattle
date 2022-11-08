@@ -55,19 +55,14 @@ namespace AutoBattle
             battlefield.grids[newBoxPosition.index] = currentBox;
         }
 
-        public void StartTurn(Grid battlefield)
+        public bool StartTurn(Grid battlefield)
         {
-            if (target == null)
-            {
-
-            }
-
             if (CheckCloseTargets(battlefield))
             {
                 Attack(target);
 
 
-                return;
+                return false;
             }
             else
             {   // if there is no target close enough, calculates in wich direction this character should move to be closer to a possible target
@@ -75,43 +70,54 @@ namespace AutoBattle
                 {
                     Move(battlefield, battlefield.grids[currentBox.index - 1]);
                     Console.WriteLine($"Player {playerIndex} walked left\n");
-                    return;
+                    return true;
                 }
                 else if (currentBox.xIndex < target.currentBox.xIndex)
                 {
                     Move(battlefield, battlefield.grids[currentBox.index + 1]);
                     Console.WriteLine($"Player {playerIndex} walked right\n");
-                    return;
+                    return true;
                 }
 
                 if (this.currentBox.yIndex > target.currentBox.yIndex)
                 {
                     Move(battlefield, battlefield.grids[currentBox.index - battlefield.yLenght]);
                     Console.WriteLine($"Player {playerIndex} walked up\n");
-                    return;
+                    return true;
                 }
                 else if (this.currentBox.yIndex < target.currentBox.yIndex)
                 {
                     Move(battlefield, battlefield.grids[currentBox.index + battlefield.yLenght]);
                     Console.WriteLine($"Player {playerIndex} walked down\n");
-                    return;
+                    return true;
                 }
-
+                return false;
             }
         }
 
         // Check in x and y directions if there is any character close enough to be a target.
         bool CheckCloseTargets(Grid battlefield)
         {
-            //bool left = battlefield.grids[currentBox.Index - 1].ocupied;
-            //bool right = battlefield.grids[currentBox.Index + 1].ocupied;
-            //bool up = battlefield.grids[currentBox.Index - battlefield.xLenght].ocupied;
-            //bool down = battlefield.grids[currentBox.Index + battlefield.xLenght].ocupied;
+            bool left = false;
+            if (currentBox.index > 1)
+                left = battlefield.grids[currentBox.index - 1].ocupied;
 
-            //if (left & right & up & down)
-            //{
-            //    return true;
-            //}
+            bool right = false;
+            if (currentBox.index < battlefield.grids.Length - 1)
+                right = battlefield.grids[currentBox.index + 1].ocupied;
+
+            bool up = false;
+            if (currentBox.index > battlefield.yLenght)
+                up = battlefield.grids[currentBox.index - battlefield.yLenght].ocupied;
+
+            bool down = false;
+            if (currentBox.index + battlefield.yLenght < battlefield.grids.Length - 1)
+                down = battlefield.grids[currentBox.index + battlefield.yLenght].ocupied;
+
+            if (left || right || up || down)
+            {
+                return true;
+            }
             return false;
         }
 

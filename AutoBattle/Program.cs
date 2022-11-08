@@ -67,9 +67,6 @@ namespace AutoBattle
                 AllPlayers[0].target = AllPlayers[1];
                 AllPlayers[1].target = AllPlayers[0];
                 AllocatePlayers();
-
-                // Draw first time
-                battlefield.Draw();
                 StartTurn();
             }
 
@@ -100,12 +97,15 @@ namespace AutoBattle
 
             void StartTurn()
             {
-                foreach (Character character in AllPlayers)
+                bool reDrawBattlefield = false;
+                for (int i = 0; i < AllPlayers.Length; i++)
                 {
-                    character.StartTurn(battlefield);
+                    Character character = AllPlayers[i];
+                    reDrawBattlefield = character.StartTurn(battlefield);
                 }
 
-                battlefield.Draw();
+                if (reDrawBattlefield)
+                    battlefield.Draw();
 
                 currentTurn++;
                 HandleTurn();

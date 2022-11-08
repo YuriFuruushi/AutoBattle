@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{45846D4A-C766-4731-807A-F0ACD13E384D}|Default">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AutoBattle/Program.cs">
+    <Files>
+      <File FileName="AutoBattle/Grid.cs" Line="48" Column="63" />
+      <File FileName="AutoBattle/Program.cs" Line="22" Column="35" />
+      <File FileName="AutoBattle/Character.cs" Line="101" Column="73" />
+      <File FileName="AutoBattle/Types.cs" Line="14" Column="30" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AutoBattle" expanded="True">
+            <Node name="AutoBattle" expanded="True">
+              <Node name="Character.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.AutoBattle PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>
