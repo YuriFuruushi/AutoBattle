@@ -8,29 +8,31 @@ namespace AutoBattle
     public class Character
     {
         public string name;
-        public float health;
+        public float currentHealth;
+        public float maxHealth;
         private float baseDamage;
         private float damageMultiplier;
         public GridBox currentBox;
         public int playerIndex;
         public Character target;
         public CharacterClass characterClass;
-        private bool dead = false;
+        public bool dead = false;
 
-        public Character(string name, int playerIndex, float health, float baseDamage, CharacterClass characterClass)
+        public Character(string name, int playerIndex, float maxHealth, float baseDamage, CharacterClass characterClass)
         {
             this.name = name;
             this.playerIndex = playerIndex;
-            this.health = health;
             this.baseDamage = baseDamage;
             this.characterClass = characterClass;
+            this.maxHealth = maxHealth;
+            currentHealth = maxHealth;
         }
 
 
         public bool TakeDamage(float amount)
         {
-            health -= amount;
-            if (health <= 0)
+            currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+            if (currentHealth == 0)
             {
                 Die();
                 return true;
@@ -126,7 +128,7 @@ namespace AutoBattle
             var rand = new Random();
             int hitDamage = rand.Next(0, (int)baseDamage);
             target.TakeDamage(hitDamage);
-            Console.WriteLine($"{name} is attacking {this.target.name} and did {hitDamage} damage\n");
+            Console.WriteLine($"{name} is attacking {this.target.name} and did {hitDamage} damage. {this.target.name} health is {this.target.currentHealth}.\n");
         }
     }
 }

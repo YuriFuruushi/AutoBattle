@@ -115,7 +115,7 @@ namespace AutoBattle
                 for (int i = 0; i < AllPlayers.Length; i++)
                 {
                     Character character = AllPlayers[i];
-                    if (character.health <= 0)
+                    if (character.dead)
                         endGame = true;
                     else
                         winner = character.name;
