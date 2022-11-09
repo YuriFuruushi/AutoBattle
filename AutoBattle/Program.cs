@@ -1,5 +1,4 @@
 ﻿using System;
-using static AutoBattle.Types;
 
 namespace AutoBattle
 {
@@ -7,7 +6,7 @@ namespace AutoBattle
     {
         static void Main(string[] args)
         {
-            Grid battlefield = new Grid(10, 5);
+            Grid battlefield = new Grid(7, 9);
             Character[] AllPlayers = new Character[2];
             int currentTurn = 0;
             Setup();
@@ -50,7 +49,7 @@ namespace AutoBattle
                 int charClass = classIndex;
 
                 if (charClass < 1 || charClass > 4)
-                    charClass = GetRandomInt(1, 4);
+                    charClass = RandomExtensions.GetRandomInt(1, 4);
 
 
                 Character character = new Character(name, id, 100, 20, (CharacterClass)charClass);
@@ -64,8 +63,13 @@ namespace AutoBattle
                 AllPlayers[0].target = AllPlayers[1];
                 AllPlayers[1].target = AllPlayers[0];
                 AllocatePlayers();
+
+                //Randomize Players Order
+                var rnd = new Random();
+                rnd.Shuffle(AllPlayers);
                 StartTurn();
             }
+
 
             void AllocatePlayers()
             {
@@ -73,7 +77,7 @@ namespace AutoBattle
                 {
                     Character character = AllPlayers[i];
                     //Allocate players opposite directions
-                    AllocateCharacter(character, i * 49);
+                    AllocateCharacter(character);
                 }
             }
 
@@ -82,10 +86,10 @@ namespace AutoBattle
                 int spawnLocation = locationIndex;
                 if (spawnLocation == -1)
                 {
-                    spawnLocation = GetRandomInt(0, battlefield.grids.Length);
+                    spawnLocation = RandomExtensions.GetRandomInt(0, battlefield.grids.Length);
                     while (battlefield.grids[spawnLocation].ocupied)
                     {
-                        spawnLocation = GetRandomInt(0, battlefield.grids.Length);
+                        spawnLocation = RandomExtensions.GetRandomInt(0, battlefield.grids.Length);
                     }
                 }
                 battlefield.grids[spawnLocation].ocupied = true;
@@ -147,12 +151,7 @@ namespace AutoBattle
 
 
 
-            int GetRandomInt(int min, int max)
-            {
-                var rand = new Random();
-                int index = rand.Next(min, max);
-                return index;
-            }
+
         }
     }
 }

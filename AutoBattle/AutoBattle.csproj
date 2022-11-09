@@ -5,4 +5,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Battlefield\" />
+    <None Remove="Global\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Battlefield\" />
+    <Folder Include="Global\" />
+  </ItemGroup>
 </Project>

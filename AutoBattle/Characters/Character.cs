@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using static AutoBattle.Types;
 
 namespace AutoBattle
 {

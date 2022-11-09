@@ -1,3 +1,42 @@
 ﻿<Properties StartupConfiguration="{51B29243-A78F-42B6-8A3E-34E34DC2E7AF}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.AutoBattle PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Types.cs">
+    <Files>
+      <File FileName="Character.cs" />
+      <File FileName="Program.cs" />
+      <File FileName="Types.cs" Line="17" Column="10" />
+      <File FileName="Grid.cs" />
+      <File FileName="RandomExtensions.cs" />
+      <File FileName="GridBox.cs" />
+      <File FileName="CharacterClass.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AutoBattle" expanded="True">
+            <Node name="AutoBattle" expanded="True">
+              <Node name="Types" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>i</Value>
+          <Value>j</Value>
+          <Value>boxY</Value>
+          <Value>boxX</Value>
+          <Value>currentBox</Value>
+          <Value>checkIndex</Value>
+          <Value>AllPlayers</Value>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
