@@ -18,9 +18,9 @@ namespace AutoBattle
             yLenght = Columns;
             grids = new GridBox[yLenght * xLenght];
             Console.WriteLine("The battle field has been created\n");
-            for (int i = 0; i < Lines; i++)
+            for (int i = 0; i < xLenght; i++)
             {
-                for (int j = 0; j < Columns; j++)
+                for (int j = 0; j < yLenght; j++)
                 {
                     GridBox newBox = new GridBox(j, i, false, (yLenght * i + j));
                     grids[yLenght * i + j] = newBox;

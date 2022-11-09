@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using static AutoBattle.Types;
 
@@ -95,13 +96,13 @@ namespace AutoBattle
                     feedbackMessage.Append("down");
                 }
 
-                //Feedback Message Adjust
+                //Feedback Message
                 if (feedbackMessage[feedbackMessage.Length - 1] == '/')
                     feedbackMessage.Remove(feedbackMessage.Length - 1, 1);
 
                 feedbackMessage.Append(".");
 
-
+                //Move if new Position
                 if (newIndex != currentBox.index)
                 {
                     Move(battlefield, newIndex);
@@ -119,31 +120,31 @@ namespace AutoBattle
         // Check in x and y directions if there is any character close enough to be a target.
         bool CheckCloseTargets(Grid battlefield)
         {
-            //int attackRange = 1;
-            //for (int i = currentBox.xIndex - attackRange; i <= currentBox.xIndex + attackRange; i++)
-            //{
-            //    if (i < 0 || i > battlefield.xLenght)
-            //        continue;
+            int attackRange = 1;
+            for (int i = -attackRange; i <= attackRange; i++)
+            {
+                int boxX = currentBox.xIndex + i;
+                if (boxX < 0 || boxX >= battlefield.yLenght)
+                    continue;
 
-            //    for (int j = currentBox.yIndex - attackRange; j <= currentBox.yIndex + attackRange; j++)
-            //    {
-            //        if (j < 0 || j > battlefield.yLenght)
-            //            continue;
+                for (int j = -attackRange; j <= attackRange; j++)
+                {
+                    int boxY = currentBox.yIndex + j;
+                    if (boxY < 0 || boxY >= battlefield.xLenght)
+                        continue;
 
-            //        int index = battlefield.yLenght * i + j;
+                    int checkIndex = battlefield.yLenght * boxY + boxX;
 
+                    if (currentBox.index == checkIndex || checkIndex < 0 || checkIndex >= battlefield.grids.Length)
+                        continue;
 
-            //        if (index != currentBox.index && index > 0 && index < battlefield.grids.Length)
-            //        {
-            //            Console.WriteLine($"{index}");
-            //            if (battlefield.grids[index].ocupied)
-            //            {
+                    if (battlefield.grids[checkIndex].ocupied)
+                    {
+                        return true;
+                    }
+                }
+            }
 
-            //                return true;
-            //            }
-            //        }
-            //    }
-            //}
             return false;
         }
 

@@ -98,7 +98,8 @@ namespace AutoBattle
                 for (int i = 0; i < AllPlayers.Length; i++)
                 {
                     Character character = AllPlayers[i];
-                    reDrawBattlefield = character.StartTurn(battlefield);
+                    if (character.StartTurn(battlefield))
+                        reDrawBattlefield = true;
                 }
 
                 if (reDrawBattlefield)
