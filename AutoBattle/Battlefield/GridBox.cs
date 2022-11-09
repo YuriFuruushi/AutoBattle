@@ -1,4 +1,4 @@
-﻿namespace AutoBattle
+﻿namespace AutoBattle.Battlefield
 {
     public struct GridBox
     {

@@ -1,4 +1,7 @@
 ﻿using System;
+using AutoBattle.Characters;
+using AutoBattle.Battlefield;
+using System.Text;
 
 namespace AutoBattle
 {
@@ -7,7 +10,7 @@ namespace AutoBattle
         static void Main(string[] args)
         {
             Grid battlefield = new Grid(7, 9);
-            Character[] AllPlayers = new Character[2];
+            Character[] allPlayers = new Character[2];
             int currentTurn = 0;
             Setup();
 
@@ -18,7 +21,21 @@ namespace AutoBattle
                 GetPlayerChoice();
                 //Create Enemy Character
                 CreateCharacter("Enemy", 1);
+                allPlayers[0].target = allPlayers[1];
+                allPlayers[1].target = allPlayers[0];
+                //Set players in the Battlefield
+                SpawnCharacters();
+
+                Console.WriteLine("The battle field has been created!\n");
                 StartGame();
+            }
+
+            void SpawnCharacters()
+            {
+                for (int i = 0; i < allPlayers.Length; i++)
+                {
+                    allPlayers[i].Spawn(battlefield);
+                }
             }
 
             void GetPlayerChoice()
@@ -26,22 +43,19 @@ namespace AutoBattle
                 //asks for the player to choose between for possible classes via console.
                 Console.WriteLine("Choose Between One of this Classes:\n");
                 Console.WriteLine("[1] Paladin, [2] Warrior, [3] Cleric, [4] Archer");
+
                 //store the player choice in a variable
-                string choice = Console.ReadLine();
+                int key = Console.ReadKey().KeyChar - '0';
+                Console.Write(Environment.NewLine);
 
-                switch (choice)
+                if (key == 0 || key > 4)
                 {
-                    case "1":
-                    case "2":
-                    case "3":
-                    case "4":
-                        CreateCharacter("Player", 0, Int32.Parse(choice));
-                        break;
-                    default:
-                        GetPlayerChoice();
-                        break;
+                    GetPlayerChoice();
                 }
-
+                else
+                {
+                    CreateCharacter("Player", 0, key);
+                }
             }
 
             void CreateCharacter(string name, int id, int classIndex = -1)
@@ -52,61 +66,32 @@ namespace AutoBattle
                     charClass = RandomExtensions.GetRandomInt(1, 4);
 
 
-                Character character = new Character(name, id, 100, 20, (CharacterClass)charClass);
-                Console.WriteLine($"Player {id} Class Choice: {(CharacterClass)charClass}");
-                AllPlayers[id] = (character);
+                Character character = new Character(name, id, 100, 20, (CharacterClassEnum)charClass);
+                Console.WriteLine($"Player {id} Class Choice: {(CharacterClassEnum)charClass}");
+                allPlayers[id] = (character);
             }
 
             void StartGame()
             {
-                //populates the character variables and targets
-                AllPlayers[0].target = AllPlayers[1];
-                AllPlayers[1].target = AllPlayers[0];
-                AllocatePlayers();
-
                 //Randomize Players Order
                 var rnd = new Random();
-                rnd.Shuffle(AllPlayers);
+                rnd.Shuffle(allPlayers);
                 StartTurn();
             }
 
 
-            void AllocatePlayers()
-            {
-                for (int i = 0; i < AllPlayers.Length; i++)
-                {
-                    Character character = AllPlayers[i];
-                    //Allocate players opposite directions
-                    AllocateCharacter(character);
-                }
-            }
-
-            void AllocateCharacter(Character character, int locationIndex = -1)
-            {
-                int spawnLocation = locationIndex;
-                if (spawnLocation == -1)
-                {
-                    spawnLocation = RandomExtensions.GetRandomInt(0, battlefield.grids.Length);
-                    while (battlefield.grids[spawnLocation].ocupied)
-                    {
-                        spawnLocation = RandomExtensions.GetRandomInt(0, battlefield.grids.Length);
-                    }
-                }
-                battlefield.grids[spawnLocation].ocupied = true;
-                character.currentBox = battlefield.grids[spawnLocation];
-            }
-
             void StartTurn()
             {
-                bool reDrawBattlefield = false;
-                for (int i = 0; i < AllPlayers.Length; i++)
+                StringBuilder feedbackMessage = new StringBuilder();
+                for (int i = 0; i < allPlayers.Length; i++)
                 {
-                    Character character = AllPlayers[i];
-                    if (character.StartTurn(battlefield))
-                        reDrawBattlefield = true;
+                    feedbackMessage.Append(allPlayers[i].Behavior());
                 }
 
-                if (reDrawBattlefield)
+                string msg = feedbackMessage.ToString();
+                Console.WriteLine(msg);
+
+                if (msg.Contains("walked"))
                     battlefield.Draw();
 
                 currentTurn++;
@@ -115,22 +100,11 @@ namespace AutoBattle
 
             void HandleTurn()
             {
-                bool endGame = false;
-                string winner = "";
-                for (int i = 0; i < AllPlayers.Length; i++)
-                {
-                    Character character = AllPlayers[i];
-                    if (character.dead)
-                        endGame = true;
-                    else
-                        winner = character.name;
-                }
-
-                if (endGame)
+                //Check End Game
+                string winner = EndGameCheck();
+                if (!string.IsNullOrEmpty(winner))
                 {
                     Console.Write(Environment.NewLine + Environment.NewLine);
-
-                    // endgame
                     Console.WriteLine($"{winner} WON!\n");
                     Console.WriteLine("THE END!\n");
                     Console.ReadKey();
@@ -139,7 +113,7 @@ namespace AutoBattle
                 else
                 {
                     Console.Write(Environment.NewLine + Environment.NewLine);
-                    Console.WriteLine("Click on any key to start the next turn...\n");
+                    Console.WriteLine("Press any key to start the next turn...\n");
                     Console.Write(Environment.NewLine + Environment.NewLine);
 
                     ConsoleKeyInfo key = Console.ReadKey();
@@ -147,11 +121,23 @@ namespace AutoBattle
                 }
             }
 
-
-
-
-
-
+            string EndGameCheck()
+            {
+                bool endGame = false;
+                string winner = "";
+                for (int i = 0; i < allPlayers.Length; i++)
+                {
+                    Character character = allPlayers[i];
+                    if (character.dead)
+                        endGame = true;
+                    else
+                        winner = character.name;
+                }
+                if (endGame)
+                    return winner;
+                else
+                    return string.Empty;
+            }
         }
     }
 }

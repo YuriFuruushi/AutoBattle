@@ -2,36 +2,63 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using AutoBattle.Battlefield;
 
-namespace AutoBattle
+namespace AutoBattle.Characters
 {
     public class Character
     {
-        public string name;
-        public float currentHealth;
-        public float maxHealth;
-        private float baseDamage;
-        private float damageMultiplier;
-        public GridBox currentBox;
         public int playerIndex;
-        public Character target;
-        public CharacterClass characterClass;
-        public bool dead = false;
+        public string name;
 
-        public Character(string name, int playerIndex, float maxHealth, float baseDamage, CharacterClass characterClass)
+        public float maxHealth;
+        public float currentHealth;
+
+        public float baseDamage;
+        public float damageMultiplier;
+        public GridBox currentBox;
+
+        public Character target;
+        public ClassAttributes classAttributes;
+        public bool dead = false;
+        public Grid battlefield;
+
+        private Move move;
+        private Attack attack;
+
+        public Character(string name, int playerIndex, float maxHealth, float baseDamage, CharacterClassEnum characterClass)
         {
             this.name = name;
             this.playerIndex = playerIndex;
             this.baseDamage = baseDamage;
-            this.characterClass = characterClass;
-            this.maxHealth = maxHealth;
+            this.classAttributes = new ClassAttributes(characterClass);
+            this.maxHealth = maxHealth * classAttributes.hpModifier;
             currentHealth = maxHealth;
+            move = new Move(this);
+            attack = new Attack(this);
+        }
+
+        public void Spawn(Grid battlefield, int locationIndex = -1)
+        {
+            this.battlefield = battlefield;
+            int spawnLocation = locationIndex;
+            if (spawnLocation == -1)
+            {
+                spawnLocation = RandomExtensions.GetRandomInt(0, this.battlefield.grids.Length);
+                while (this.battlefield.grids[spawnLocation].ocupied)
+                {
+                    spawnLocation = RandomExtensions.GetRandomInt(0, this.battlefield.grids.Length);
+                }
+            }
+            this.battlefield.grids[spawnLocation].ocupied = true;
+            currentBox = this.battlefield.grids[spawnLocation];
         }
 
 
         public bool TakeDamage(float amount)
         {
             currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+            currentHealth = (float)Math.Round(currentHealth, 1);
             if (currentHealth == 0)
             {
                 Die();
@@ -45,114 +72,39 @@ namespace AutoBattle
             dead = true;
         }
 
-        private void Move(Grid battlefield, int newBoxIndex)
+        public string Behavior()
         {
-            battlefield.grids[currentBox.index].ocupied = false;
-            battlefield.grids[newBoxIndex].ocupied = true;
-            currentBox = battlefield.grids[newBoxIndex];
-        }
-
-        public bool StartTurn(Grid battlefield)
-        {
+            StringBuilder feedbackMessage = new StringBuilder();
             if (dead)
-                return false;
-
-            if (CheckCloseTargets(battlefield))
             {
-                Attack(target);
+                feedbackMessage.Append($"{name} is Dead.\n");
+                return feedbackMessage.ToString();
+            }
 
-
-                return false;
+            if (attack.TargetInRange())
+            {
+                float damageDealt = attack.ApplyDamage(target);
+                feedbackMessage.Append($"{name} is attacking {target.name} and did {damageDealt} damage. {target.name} health is {target.currentHealth}.\n");
+                return feedbackMessage.ToString();
             }
             else
-            {   // if there is no target close enough, calculates in wich direction this character should move to be closer to a possible target
+            {
+                feedbackMessage.Append($"Player {playerIndex} walked ");
 
-                int newIndex = currentBox.index;
+                string moveResult = move.ChaseTarget(target);
 
-                StringBuilder feedbackMessage = new StringBuilder($"Player {playerIndex} walked ");
-
-                //Move in X
-                if ((currentBox.xIndex % battlefield.xLenght) > (target.currentBox.xIndex % battlefield.xLenght))
+                if (!string.IsNullOrEmpty(moveResult))
                 {
-                    newIndex -= 1;
-                    feedbackMessage.Append("left/");
-                }
-                else if ((currentBox.xIndex % battlefield.xLenght) < (target.currentBox.xIndex % battlefield.xLenght))
-                {
-                    newIndex += 1;
-                    feedbackMessage.Append("right/");
-                }
-
-                //Move in Y
-                if (currentBox.yIndex > target.currentBox.yIndex)
-                {
-                    newIndex -= battlefield.yLenght;
-                    feedbackMessage.Append("up");
-                }
-                else if (currentBox.yIndex < target.currentBox.yIndex)
-                {
-                    newIndex += battlefield.yLenght;
-                    feedbackMessage.Append("down");
-                }
-
-                //Feedback Message
-                if (feedbackMessage[feedbackMessage.Length - 1] == '/')
-                    feedbackMessage.Remove(feedbackMessage.Length - 1, 1);
-
-                feedbackMessage.Append(".");
-
-                //Move if new Position
-                if (newIndex != currentBox.index)
-                {
-                    Move(battlefield, newIndex);
-                    Console.WriteLine(feedbackMessage);
-                    return true;
+                    feedbackMessage.Append(moveResult);
+                    return feedbackMessage.ToString();
                 }
                 else
                 {
-                    return false;
-                }
-
-            }
-        }
-
-        // Check in x and y directions if there is any character close enough to be a target.
-        bool CheckCloseTargets(Grid battlefield)
-        {
-            int attackRange = 1;
-            for (int i = -attackRange; i <= attackRange; i++)
-            {
-                int boxX = currentBox.xIndex + i;
-                if (boxX < 0 || boxX >= battlefield.yLenght)
-                    continue;
-
-                for (int j = -attackRange; j <= attackRange; j++)
-                {
-                    int boxY = currentBox.yIndex + j;
-                    if (boxY < 0 || boxY >= battlefield.xLenght)
-                        continue;
-
-                    int checkIndex = battlefield.yLenght * boxY + boxX;
-
-                    if (currentBox.index == checkIndex || checkIndex < 0 || checkIndex >= battlefield.grids.Length)
-                        continue;
-
-                    if (battlefield.grids[checkIndex].ocupied)
-                    {
-                        return true;
-                    }
+                    return feedbackMessage.ToString();
                 }
             }
-
-            return false;
         }
 
-        public void Attack(Character target)
-        {
-            var rand = new Random();
-            int hitDamage = rand.Next(0, (int)baseDamage);
-            target.TakeDamage(hitDamage);
-            Console.WriteLine($"{name} is attacking {this.target.name} and did {hitDamage} damage. {this.target.name} health is {this.target.currentHealth}.\n");
-        }
+
     }
 }

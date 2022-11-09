@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutoBattle
+namespace AutoBattle.Battlefield
 {
     public class Grid
     {
@@ -15,7 +15,6 @@ namespace AutoBattle
             xLenght = Lines;
             yLenght = Columns;
             grids = new GridBox[yLenght * xLenght];
-            Console.WriteLine("The battle field has been created\n");
             for (int i = 0; i < xLenght; i++)
             {
                 for (int j = 0; j < yLenght; j++)
@@ -37,12 +36,11 @@ namespace AutoBattle
                     GridBox currentgrid = grids[yLenght * i + j];
                     if (grids[yLenght * i + j].ocupied)
                     {
-                        //if()
                         Console.Write("<X>\t");
                     }
                     else
                     {
-                        Console.Write($"[" + currentgrid.index + "]\t");
+                        Console.Write($"[ ]\t");
                     }
                 }
                 Console.Write(Environment.NewLine + Environment.NewLine);

@@ -1,6 +1,6 @@
-﻿namespace AutoBattle
+﻿namespace AutoBattle.Characters
 {
-    public enum CharacterClass : uint
+    public enum CharacterClassEnum : uint
     {
         Paladin = 1,
         Warrior = 2,
