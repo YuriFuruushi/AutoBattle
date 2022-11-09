@@ -7,7 +7,7 @@ namespace AutoBattle
     {
         static void Main(string[] args)
         {
-            Grid battlefield = new Grid(5, 10);
+            Grid battlefield = new Grid(10, 5);
             Character[] AllPlayers = new Character[2];
             int currentTurn = 0;
             Setup();

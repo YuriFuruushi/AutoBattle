@@ -45,13 +45,11 @@ namespace AutoBattle
             dead = true;
         }
 
-        private void Move(Grid battlefield, GridBox newBoxPosition)
+        private void Move(Grid battlefield, int newBoxIndex)
         {
-            currentBox.ocupied = false;
-            battlefield.grids[currentBox.index] = currentBox;
-            currentBox = newBoxPosition;
-            currentBox.ocupied = true;
-            battlefield.grids[newBoxPosition.index] = currentBox;
+            battlefield.grids[currentBox.index].ocupied = false;
+            battlefield.grids[newBoxIndex].ocupied = true;
+            currentBox = battlefield.grids[newBoxIndex];
         }
 
         public bool StartTurn(Grid battlefield)
@@ -68,58 +66,84 @@ namespace AutoBattle
             }
             else
             {   // if there is no target close enough, calculates in wich direction this character should move to be closer to a possible target
-                if (this.currentBox.xIndex > target.currentBox.xIndex)
+
+                int newIndex = currentBox.index;
+
+                StringBuilder feedbackMessage = new StringBuilder($"Player {playerIndex} walked ");
+
+                //Move in X
+                if ((currentBox.xIndex % battlefield.xLenght) > (target.currentBox.xIndex % battlefield.xLenght))
                 {
-                    Move(battlefield, battlefield.grids[currentBox.index - 1]);
-                    Console.WriteLine($"Player {playerIndex} walked left\n");
-                    return true;
+                    newIndex -= 1;
+                    feedbackMessage.Append("left/");
                 }
-                else if (currentBox.xIndex < target.currentBox.xIndex)
+                else if ((currentBox.xIndex % battlefield.xLenght) < (target.currentBox.xIndex % battlefield.xLenght))
                 {
-                    Move(battlefield, battlefield.grids[currentBox.index + 1]);
-                    Console.WriteLine($"Player {playerIndex} walked right\n");
-                    return true;
+                    newIndex += 1;
+                    feedbackMessage.Append("right/");
                 }
 
-                if (this.currentBox.yIndex > target.currentBox.yIndex)
+                //Move in Y
+                if (currentBox.yIndex > target.currentBox.yIndex)
                 {
-                    Move(battlefield, battlefield.grids[currentBox.index - battlefield.yLenght]);
-                    Console.WriteLine($"Player {playerIndex} walked up\n");
+                    newIndex -= battlefield.yLenght;
+                    feedbackMessage.Append("up");
+                }
+                else if (currentBox.yIndex < target.currentBox.yIndex)
+                {
+                    newIndex += battlefield.yLenght;
+                    feedbackMessage.Append("down");
+                }
+
+                //Feedback Message Adjust
+                if (feedbackMessage[feedbackMessage.Length - 1] == '/')
+                    feedbackMessage.Remove(feedbackMessage.Length - 1, 1);
+
+                feedbackMessage.Append(".");
+
+
+                if (newIndex != currentBox.index)
+                {
+                    Move(battlefield, newIndex);
+                    Console.WriteLine(feedbackMessage);
                     return true;
                 }
-                else if (this.currentBox.yIndex < target.currentBox.yIndex)
+                else
                 {
-                    Move(battlefield, battlefield.grids[currentBox.index + battlefield.yLenght]);
-                    Console.WriteLine($"Player {playerIndex} walked down\n");
-                    return true;
+                    return false;
                 }
-                return false;
+
             }
         }
 
         // Check in x and y directions if there is any character close enough to be a target.
         bool CheckCloseTargets(Grid battlefield)
         {
-            bool left = false;
-            if (currentBox.index > 1)
-                left = battlefield.grids[currentBox.index - 1].ocupied;
+            //int attackRange = 1;
+            //for (int i = currentBox.xIndex - attackRange; i <= currentBox.xIndex + attackRange; i++)
+            //{
+            //    if (i < 0 || i > battlefield.xLenght)
+            //        continue;
 
-            bool right = false;
-            if (currentBox.index < battlefield.grids.Length - 1)
-                right = battlefield.grids[currentBox.index + 1].ocupied;
+            //    for (int j = currentBox.yIndex - attackRange; j <= currentBox.yIndex + attackRange; j++)
+            //    {
+            //        if (j < 0 || j > battlefield.yLenght)
+            //            continue;
 
-            bool up = false;
-            if (currentBox.index > battlefield.yLenght)
-                up = battlefield.grids[currentBox.index - battlefield.yLenght].ocupied;
+            //        int index = battlefield.yLenght * i + j;
 
-            bool down = false;
-            if (currentBox.index + battlefield.yLenght < battlefield.grids.Length - 1)
-                down = battlefield.grids[currentBox.index + battlefield.yLenght].ocupied;
 
-            if (left || right || up || down)
-            {
-                return true;
-            }
+            //        if (index != currentBox.index && index > 0 && index < battlefield.grids.Length)
+            //        {
+            //            Console.WriteLine($"{index}");
+            //            if (battlefield.grids[index].ocupied)
+            //            {
+
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
             return false;
         }
 
