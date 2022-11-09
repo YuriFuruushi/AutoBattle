@@ -124,7 +124,7 @@ namespace AutoBattle
             string EndGameCheck()
             {
                 bool endGame = false;
-                string winner = "";
+                string winner = string.Empty;
                 for (int i = 0; i < allPlayers.Length; i++)
                 {
                     Character character = allPlayers[i];

@@ -27,12 +27,12 @@ namespace AutoBattle.Characters
             StringBuilder feedbackMessage = new StringBuilder();
 
             //Move in X
-            if ((character.currentBox.xIndex % character.battlefield.xLenght) > (target.currentBox.xIndex % character.battlefield.xLenght))
+            if (character.currentBox.index > target.currentBox.index)
             {
                 newIndex -= 1;
                 feedbackMessage.Append("left/");
             }
-            else if ((character.currentBox.xIndex % character.battlefield.xLenght) < (target.currentBox.xIndex % character.battlefield.xLenght))
+            else if (character.currentBox.index < target.currentBox.index)
             {
                 newIndex += 1;
                 feedbackMessage.Append("right/");

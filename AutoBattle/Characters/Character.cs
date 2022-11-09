@@ -89,7 +89,7 @@ namespace AutoBattle.Characters
             }
             else
             {
-                feedbackMessage.Append($"Player {playerIndex} walked ");
+                feedbackMessage.Append($"{name} walked ");
 
                 string moveResult = move.ChaseTarget(target);
 
