@@ -48,7 +48,6 @@ namespace AutoBattle
                 Console.WriteLine("Choose Between One of this Classes:\n");
                 Console.WriteLine("[1] Paladin, [2] Warrior, [3] Cleric, [4] Archer");
 
-                //store the player choice in a variable
                 int key = Console.ReadKey().KeyChar - '0';
                 Console.Write(Environment.NewLine);
 
@@ -62,7 +61,6 @@ namespace AutoBattle
                 }
             }
 
-            //Create a new Character
             void CreateCharacter(string name, int id, int classIndex = -1)
             {
                 int charClass = classIndex;
@@ -89,15 +87,19 @@ namespace AutoBattle
             void StartTurn()
             {
                 StringBuilder feedbackMessage = new StringBuilder();
+                bool refreshMap = false;
                 for (int i = 0; i < battlefield.allPlayers.Length; i++)
                 {
-                    feedbackMessage.Append(battlefield.allPlayers[i].Behavior());
+                    var (feedbackMsg, moved) = battlefield.allPlayers[i].Behavior();
+                    feedbackMessage.Append(feedbackMsg);
+                    if (moved)
+                        refreshMap = true;
                 }
 
                 string msg = feedbackMessage.ToString();
                 Console.WriteLine(msg);
 
-                if (msg.Contains("walked"))
+                if (refreshMap)
                     battlefield.Draw();
 
                 currentTurn++;

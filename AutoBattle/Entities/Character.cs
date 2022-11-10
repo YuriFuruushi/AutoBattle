@@ -78,7 +78,7 @@ namespace AutoBattle.Entities
         }
 
         //Check if there is a close target and attack OR move closer to target
-        public string Behavior()
+        public (string result, bool move) Behavior()
         {
             StringBuilder feedbackMessage = new StringBuilder();
 
@@ -86,12 +86,12 @@ namespace AutoBattle.Entities
             if (Dead)
             {
                 feedbackMessage.Append($"{Name} is Dead.\n");
-                return feedbackMessage.ToString();
+                return (feedbackMessage.ToString(), false);
             }
 
             target = sight.SearchTarget(this);
             if (target == null)
-                return feedbackMessage.ToString();
+                return (feedbackMessage.ToString(), false);
 
             //Check if Target in Range
             if (attack.TargetInRange(this, ClassAttributes.AttackRange))
@@ -110,7 +110,7 @@ namespace AutoBattle.Entities
                 }
 
                 feedbackMessage.Append($"and did {damageDealt} damage. {target.Name} health is {target.currentHealth}.\n");
-                return feedbackMessage.ToString();
+                return (feedbackMessage.ToString(), false);
             }
             else
             {
@@ -121,11 +121,11 @@ namespace AutoBattle.Entities
                 {
                     feedbackMessage.Append($"{Name} walked ");
                     feedbackMessage.Append(moveResult);
-                    return feedbackMessage.ToString();
+                    return (feedbackMessage.ToString(), true);
                 }
                 else
                 {
-                    return feedbackMessage.ToString();
+                    return (feedbackMessage.ToString(), false);
                 }
             }
         }
