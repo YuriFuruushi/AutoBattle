@@ -1,42 +1,51 @@
 ﻿<Properties StartupConfiguration="{51B29243-A78F-42B6-8A3E-34E34DC2E7AF}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.AutoBattle PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Types.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Entities/Actions/Attack.cs">
     <Files>
-      <File FileName="Character.cs" />
-      <File FileName="Program.cs" />
-      <File FileName="Types.cs" Line="17" Column="10" />
-      <File FileName="Grid.cs" />
-      <File FileName="RandomExtensions.cs" />
-      <File FileName="GridBox.cs" />
-      <File FileName="CharacterClass.cs" />
+      <File FileName="Global/Contants.cs" Line="15" Column="51" />
+      <File FileName="Program.cs" Line="13" Column="109" />
+      <File FileName="Entities/Character.cs" Line="40" Column="66" />
+      <File FileName="Entities/CharacterClassEnum.cs" Line="1" Column="1" />
+      <File FileName="Entities/ClassAttributes.cs" Line="18" Column="36" />
+      <File FileName="Entities/Actions/Skill.cs" Line="1" Column="1" />
+      <File FileName="Entities/Actions/Move.cs" Line="15" Column="32" />
+      <File FileName="Entities/Actions/Attack.cs" Line="19" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="AutoBattle" expanded="True">
             <Node name="AutoBattle" expanded="True">
-              <Node name="Types" expanded="True" />
+              <Node name="Entities" expanded="True">
+                <Node name="Actions" expanded="True">
+                  <Node name="Attack.cs" selected="True" />
+                </Node>
+                <Node name="Senses" expanded="True" />
+              </Node>
+              <Node name="Global" expanded="True" />
+              <Node name="Map" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
-          <Value>i</Value>
-          <Value>j</Value>
-          <Value>boxY</Value>
-          <Value>boxX</Value>
-          <Value>currentBox</Value>
-          <Value>checkIndex</Value>
-          <Value>AllPlayers</Value>
+          <Value>character.currentBox</Value>
+          <Value>character.currentBox.index</Value>
+          <Value>(Math.Ceiling(direction.X))</Value>
+          <Value>(Math.Ceiling(direction.Y))</Value>
+          <Value>(int)(Math.Round(direction.X, 0))</Value>
+          <Value>(int)(Math.Round(direction.Y, 0))</Value>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.AutoBattle PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/yaaguz/Unity Projects/AutoBattle/AutoBattle/Entities/Actions/Attack.cs" relfile="Entities/Actions/Attack.cs" line="21" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

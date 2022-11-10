@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Battlefield\" />
     <None Remove="Global\" />
+    <None Remove="Entities\Actions\" />
+    <None Remove="Entities\Senses\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Battlefield\" />
     <Folder Include="Global\" />
+    <Folder Include="Entities\Actions\" />
+    <Folder Include="Entities\Senses\" />
   </ItemGroup>
 </Project>

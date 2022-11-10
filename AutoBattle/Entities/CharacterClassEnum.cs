@@ -1,4 +1,4 @@
-﻿namespace AutoBattle.Characters
+﻿namespace AutoBattle.Entities
 {
     public enum CharacterClassEnum : uint
     {

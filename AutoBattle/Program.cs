@@ -1,7 +1,8 @@
 ﻿using System;
-using AutoBattle.Characters;
-using AutoBattle.Battlefield;
+using AutoBattle.Entities;
+using AutoBattle.Map;
 using System.Text;
+using System.Numerics;
 
 namespace AutoBattle
 {
@@ -9,35 +10,38 @@ namespace AutoBattle
     {
         static void Main(string[] args)
         {
-            Grid battlefield = new Grid(7, 9);
-            Character[] allPlayers = new Character[2];
+            Battlefield battlefield;
             int currentTurn = 0;
             Setup();
 
-
+            //Create Characters and Battlefield
             void Setup()
             {
+                //Create Battlefield
+                battlefield = new Battlefield(new Vector2(Constants.MapWidth, Constants.MapHeight));
                 //Create Player Character
                 GetPlayerChoice();
                 //Create Enemy Character
                 CreateCharacter("Enemy", 1);
-                allPlayers[0].target = allPlayers[1];
-                allPlayers[1].target = allPlayers[0];
                 //Set players in the Battlefield
                 SpawnCharacters();
-
+                Console.Write(Environment.NewLine);
+                //Draw battlefield for the first time
+                battlefield.Draw();
                 Console.WriteLine("The battle field has been created!\n");
                 StartGame();
             }
 
+            //Allocate Characters in the Battlefield
             void SpawnCharacters()
             {
-                for (int i = 0; i < allPlayers.Length; i++)
+                for (int i = 0; i < battlefield.allPlayers.Length; i++)
                 {
-                    allPlayers[i].Spawn(battlefield);
+                    battlefield.allPlayers[i].Spawn(battlefield);
                 }
             }
 
+            //Get Player Class & Create Character
             void GetPlayerChoice()
             {
                 //asks for the player to choose between for possible classes via console.
@@ -58,6 +62,7 @@ namespace AutoBattle
                 }
             }
 
+            //Create a new Character
             void CreateCharacter(string name, int id, int classIndex = -1)
             {
                 int charClass = classIndex;
@@ -66,16 +71,17 @@ namespace AutoBattle
                     charClass = RandomExtensions.GetRandomInt(1, 4);
 
 
-                Character character = new Character(name, id, 100, 20, (CharacterClassEnum)charClass);
-                Console.WriteLine($"Player {id} Class Choice: {(CharacterClassEnum)charClass}");
-                allPlayers[id] = (character);
+                Character character = new Character(name, id, Constants.CharacterBaseHealth, Constants.CharacterBaseDamage, (CharacterClassEnum)charClass);
+                Console.WriteLine($"{name} Class = {(CharacterClassEnum)charClass}");
+                battlefield.allPlayers[id] = (character);
             }
+
 
             void StartGame()
             {
                 //Randomize Players Order
                 var rnd = new Random();
-                rnd.Shuffle(allPlayers);
+                rnd.Shuffle(battlefield.allPlayers);
                 StartTurn();
             }
 
@@ -83,9 +89,9 @@ namespace AutoBattle
             void StartTurn()
             {
                 StringBuilder feedbackMessage = new StringBuilder();
-                for (int i = 0; i < allPlayers.Length; i++)
+                for (int i = 0; i < battlefield.allPlayers.Length; i++)
                 {
-                    feedbackMessage.Append(allPlayers[i].Behavior());
+                    feedbackMessage.Append(battlefield.allPlayers[i].Behavior());
                 }
 
                 string msg = feedbackMessage.ToString();
@@ -121,17 +127,18 @@ namespace AutoBattle
                 }
             }
 
+            //If one of the players are dead, end game
             string EndGameCheck()
             {
                 bool endGame = false;
                 string winner = string.Empty;
-                for (int i = 0; i < allPlayers.Length; i++)
+                for (int i = 0; i < battlefield.allPlayers.Length; i++)
                 {
-                    Character character = allPlayers[i];
-                    if (character.dead)
+                    Character character = battlefield.allPlayers[i];
+                    if (character.Dead)
                         endGame = true;
                     else
-                        winner = character.name;
+                        winner = character.Name;
                 }
                 if (endGame)
                     return winner;
