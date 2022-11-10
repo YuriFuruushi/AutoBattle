@@ -101,7 +101,7 @@ namespace AutoBattle.Entities
                 if (RandomExtensions.GetRandomInt(0, 5) == 0)
                 {
                     damageDealt = attack.Skill(ClassAttributes.Skills[0].Damage, ClassAttributes.Skills[0].DamageMultiplier, target);
-                    feedbackMessage.Append($"{Name} used skill {ClassAttributes.Skills[0].Name} on {target.Name} ");
+                    feedbackMessage.Append($"{Name} used skill \"{ClassAttributes.Skills[0].Name}\" on {target.Name} ");
                 }
                 else
                 {
