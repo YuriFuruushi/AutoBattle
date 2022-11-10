@@ -6,7 +6,7 @@ namespace AutoBattle.Entities.Actions
 {
     public class Move
     {
-
+        //Move to a new GridBox
         public void To(Character character, int newBoxIndex)
         {
             character.Battlefield.grids[character.CurrentBox.Index].Ocupied = false;
@@ -14,6 +14,7 @@ namespace AutoBattle.Entities.Actions
             character.CurrentBox = character.Battlefield.grids[newBoxIndex];
         }
 
+        //Move towards target position
         public string ChaseTarget(Character character, Character target, int speed)
         {
             //Get the direction of the target
